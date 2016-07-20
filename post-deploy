@@ -15,9 +15,8 @@ if [[ -f "$DOKKU_ROOT/NOTIFY_URL" ]]; then
   NOTIFY_JSON="{ \
     \"revision\": \"$GIT_REV\", \
     \"hostname\": \"$HOSTNAME\", \
-    \"args\": \"$PUBLIC_IP\" \
+    \"public_ip\": \"$PUBLIC_IP\" \
   }"
-  echo "       ${NOTIFY_JSON}"
   CURL_RESULT=$(curl -s -d "payload=$NOTIFY_JSON" "${NOTIFY_URL}" -w "%{http_code}" 2> /dev/null)
   echo "       ${CURL_RESULT}"
 fi
