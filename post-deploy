@@ -12,5 +12,6 @@ if [[ -f "$DOKKU_ROOT/NOTIFY_URL" ]]; then
     \"revision\": \"$2\"
   }"
   CURL_RESULT=$(curl -s -d "payload=$NOTIFY_JSON" "${NOTIFY_URL}" -w "%{http_code}")
+  echo "       ${NOTIFY_JSON}"
   echo "       ${CURL_RESULT}"
 fi
