@@ -6,14 +6,14 @@ source "$PLUGIN_CORE_AVAILABLE_PATH/common/functions"
 verify_app_name "$1"
 
 if [[ -f "$DOKKU_ROOT/NOTIFY_URL" ]]; then
-  echo "-----> Notifying Slack ..."
+  echo "-----> Notifying ..."
   URL=$(dokku url $APP)
   NOTIFY_URL=$(cat "$DOKKU_ROOT/SLACK_URL" 2> /dev/null)
   NOTIFY_JSON="{ \
     \"deployed\": \"$URL\", \
     \"revision\": \"$2\"
   }"
-  CURL_RESULT=$(curl -s -d "payload=$NOTIFY_JSON" "${NOTIFY_URL}" -w "%{http_code}")
   echo "       ${NOTIFY_JSON}"
+  CURL_RESULT=$(curl -s -d "payload=$NOTIFY_JSON" "${NOTIFY_URL}" -w "%{http_code}")
   echo "       ${CURL_RESULT}"
 fi
