@@ -5,18 +5,18 @@ source "$PLUGIN_CORE_AVAILABLE_PATH/common/functions"
 
 verify_app_name "$1"
 
-if [[! -z $(dokku config:get --global DOKKU_NOTIFY_URL) ]]; then
-  echo "-----> Notifying ..."
-  NOTIFY_URL=$(dokku config:get --global DOKKU_NOTIFY_URL 2> /dev/null)
-  HOSTNAME=$(hostname)
-  GIT_REV=$(GIT_DIR=$DOKKU_ROOT/$APP git rev-parse HEAD)
-  PUBLIC_IP=$(LANG=c ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}')
+[[ -z $(dokku config:get --global DOKKU_NOTIFY_URL) ]] && exit 0
 
-  NOTIFY_JSON="{ \
-    \"revision\": \"$GIT_REV\", \
-    \"hostname\": \"$HOSTNAME\", \
-    \"public_ip\": \"$PUBLIC_IP\" \
-  }"
-  CURL_RESULT=$(curl -s -d "payload=$NOTIFY_JSON" "${NOTIFY_URL}" -w "%{http_code}" 2> /dev/null)
-  echo "       ${CURL_RESULT}"
-fi
+echo "-----> Notifying ..."
+NOTIFY_URL=$(dokku config:get --global DOKKU_NOTIFY_URL 2> /dev/null)
+HOSTNAME=$(hostname)
+GIT_REV=$(GIT_DIR=$DOKKU_ROOT/$APP git rev-parse HEAD)
+PUBLIC_IP=$(LANG=c ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}')
+
+NOTIFY_JSON="{ \
+  \"revision\": \"$GIT_REV\", \
+  \"hostname\": \"$HOSTNAME\", \
+  \"public_ip\": \"$PUBLIC_IP\" \
+}"
+CURL_RESULT=$(curl -s -d "payload=$NOTIFY_JSON" "${NOTIFY_URL}" -w "%{http_code}" 2> /dev/null)
+echo "       ${CURL_RESULT}"
