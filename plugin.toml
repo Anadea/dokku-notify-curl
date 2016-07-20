@@ -1,0 +1,4 @@
+[plugin]
+description = "Curl notifier on deploy"
+version = "0.0.1"
+[plugin.config]
