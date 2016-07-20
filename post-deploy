@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 
-source "$(dirname $0)/../dokku_common"
+source "$PLUGIN_CORE_AVAILABLE_PATH/common/functions"
 
 verify_app_name "$1"
 
