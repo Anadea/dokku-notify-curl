@@ -7,13 +7,14 @@ verify_app_name "$1"
 
 if [[ -f "$DOKKU_ROOT/NOTIFY_URL" ]]; then
   echo "-----> Notifying ..."
-  echo $APP
   URL=$(dokku url $APP)
-  echo $URL
   NOTIFY_URL=$(cat "$DOKKU_ROOT/NOTIFY_URL" 2> /dev/null)
+  HOSTNAME=$(hostname)
   NOTIFY_JSON="{ \
     \"deployed\": \"$URL\", \
-    \"revision\": \"$2\"
+    \"revision\": \"$2\", \
+    \"hostname\": \"$HOSTNAME\", \
+    \"args\": \"$@\" \
   }"
   echo "       ${NOTIFY_JSON}"
   CURL_RESULT=$(curl -s -d "payload=$NOTIFY_JSON" "${NOTIFY_URL}" -w "%{http_code}" || echo "")
