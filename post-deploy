@@ -10,7 +10,7 @@ if [[ -f "$DOKKU_ROOT/NOTIFY_URL" ]]; then
   NOTIFY_URL=$(cat "$DOKKU_ROOT/NOTIFY_URL" 2> /dev/null)
   HOSTNAME=$(hostname)
   GIT_REV=$(GIT_DIR=$DOKKU_ROOT/$APP git rev-parse HEAD)
-  PUBLIC_IP=$(wget http://ipinfo.io/ip -qO -)
+  PUBLIC_IP=$(LANG=c ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}')
 
   NOTIFY_JSON="{ \
     \"revision\": \"$GIT_REV\", \
