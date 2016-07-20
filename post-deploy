@@ -7,16 +7,17 @@ verify_app_name "$1"
 
 if [[ -f "$DOKKU_ROOT/NOTIFY_URL" ]]; then
   echo "-----> Notifying ..."
-  URL=$(dokku url $APP)
   NOTIFY_URL=$(cat "$DOKKU_ROOT/NOTIFY_URL" 2> /dev/null)
   HOSTNAME=$(hostname)
+  GIT_REV=$(GIT_DIR=$DOKKU_ROOT/$APP git rev-parse HEAD)
+  PUBLIC_IP=$(wget http://ipinfo.io/ip -qO -)
+
   NOTIFY_JSON="{ \
-    \"deployed\": \"$URL\", \
-    \"revision\": \"$2\", \
+    \"revision\": \"$GIT_REV\", \
     \"hostname\": \"$HOSTNAME\", \
-    \"args\": \"$@\" \
+    \"args\": \"$PUBLIC_IP\" \
   }"
   echo "       ${NOTIFY_JSON}"
-  CURL_RESULT=$(curl -s -d "payload=$NOTIFY_JSON" "${NOTIFY_URL}" -w "%{http_code}" || echo "")
+  CURL_RESULT=$(curl -s -d "payload=$NOTIFY_JSON" "${NOTIFY_URL}" -w "%{http_code}" 2> /dev/null)
   echo "       ${CURL_RESULT}"
 fi
