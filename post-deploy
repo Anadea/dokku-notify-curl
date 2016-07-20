@@ -9,6 +9,7 @@ if [[ -f "$DOKKU_ROOT/NOTIFY_URL" ]]; then
   echo "-----> Notifying ..."
   echo $APP
   URL=$(dokku url $APP)
+  echo $URL
   NOTIFY_URL=$(cat "$DOKKU_ROOT/SLACK_URL" 2> /dev/null)
   NOTIFY_JSON="{ \
     \"deployed\": \"$URL\", \
