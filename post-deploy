@@ -18,5 +18,5 @@ NOTIFY_JSON="{ \
   \"hostname\": \"$HOSTNAME\", \
   \"public_ip\": \"$PUBLIC_IP\" \
 }"
-CURL_RESULT=$(curl -s -H "Content-Type: application/json" -d "payload=$NOTIFY_JSON" "${NOTIFY_URL}" -w "%{http_code}" 2> /dev/null)
+CURL_RESULT=$(curl -s -H "Content-Type: application/json" -d "$NOTIFY_JSON" "${NOTIFY_URL}" -w "%{http_code}" 2> /dev/null)
 echo "       ${CURL_RESULT}"
